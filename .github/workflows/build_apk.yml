@@ -24,12 +24,12 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Instalar Dependências do Sistema
+      - name: Instalar Dependências do Sistema e Cython Compatível
         run: |
           sudo apt-get update
           sudo apt-get install -y git zip unzip cmake libffi-dev libssl-dev zlib1g-dev autoconf libtool pkg-config
           pip install --upgrade pip
-          pip install buildozer cython virtualenv
+          pip install "cython<3.0" buildozer virtualenv
 
       - name: Compilar APK com Buildozer
         run: |
