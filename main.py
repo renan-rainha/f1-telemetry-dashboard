@@ -2078,38 +2078,10 @@ try:
     from kivy.app import App
     from kivy.uix.widget import Widget
     from kivy.clock import Clock
-    import webbrowser
-
-    class F1DashboardApp(App):
-        def build(self):
-            # No Android, inicializa o navegador / webview após o servidor subir
-            Clock.schedule_once(self.open_ui, 1.5)
-            return Widget()
-
-        def open_ui(self, dt):
-            try:
-                from jnius import autoclass
-                PythonActivity = autoclass('org.kivy.android.PythonActivity')
-                Intent = autoclass('android.content.Intent')
-                Uri = autoclass('android.net.Uri')
-                intent = Intent(Intent.ACTION_VIEW, Uri.parse('http://127.0.0.1:5000'))
-                currentActivity = PythonActivity.mActivity
-                currentActivity.startActivity(intent)
-            except Exception:
-                webbrowser.open('http://127.0.0.1:5000')
-
-    def start_android_app():
-        t_udp = threading.Thread(target=udp_telemetry_listener, daemon=True)
-        t_udp.start()
-        t_http = threading.Thread(target=run_http_server, daemon=True)
-        t_http.start()
-        F1DashboardApp().run()
-
-except ImportError:
-    def start_android_app():
-        t_udp = threading.Thread(target=udp_telemetry_listener, daemon=True)
-        t_udp.start()
-        run_http_server()
-
+  # ==========================================
+# INICIALIZAÇÃO PRINCIPAL DO APLICATIVO
+# ==========================================
 if __name__ == '__main__':
-    start_android_app()
+    t_udp = threading.Thread(target=udp_telemetry_listener, daemon=True)
+    t_udp.start()
+    run_http_server()
